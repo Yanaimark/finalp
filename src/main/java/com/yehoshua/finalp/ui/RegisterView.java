@@ -1,40 +1,48 @@
 package com.yehoshua.finalp.ui;
 
+import com.yehoshua.finalp.datamodels.User;
+import com.yehoshua.finalp.services.UserService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
-
-import com.yehoshua.finalp.datamodels.User;
-import com.yehoshua.finalp.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Route("register")
 public class RegisterView extends VerticalLayout {
 
-    private final UserService userService;
-
+    @Autowired
     public RegisterView(UserService userService) {
 
-        this.userService = userService;
+        TextField usernameField = new TextField("Username");
+        EmailField emailField = new EmailField("Email");
+        PasswordField passwordField = new PasswordField("Password");
 
-        TextField name = new TextField("Name");
-        TextField email = new TextField("Email");
+        Button registerButton = new Button("Register", event -> {
+            User user = new User(
+                    usernameField.getValue(),
+                    emailField.getValue(),
+                    passwordField.getValue()
+            );
 
-        Button registerButton = new Button("Register");
+            User savedUser = userService.insertUser(user);
 
-        registerButton.addClickListener(event -> {
+            Notification.show(
+                    "User registered successfully! Username: "
+                            + savedUser.getUsername()
+            );
 
-            String userName = name.getValue();
-            String userEmail = email.getValue();
-
-            User user = new User(userName, userEmail);
-
-            userService.insertUser(user);
-
-            Notification.show("User Registered: " + userName);
+            getUI().ifPresent(ui -> ui.navigate("login"));
         });
 
-        add(name, email, registerButton);
+        add(
+                usernameField,
+                emailField,
+                passwordField,
+                registerButton
+        );
     }
 }
