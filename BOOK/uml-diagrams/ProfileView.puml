@@ -1,0 +1,9 @@
+@startuml
+
+class ProfileView {
+  + ProfileView(PostService postService)
+  - displayUserDetails()
+  - displayUserPosts()
+}
+
+@enduml

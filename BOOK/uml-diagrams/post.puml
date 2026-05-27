@@ -1,0 +1,15 @@
+@startuml
+
+class Post {
+  - String id
+  - String userId
+  - String caption
+  - String mediaUrl
+  - List<String> tags
+  - int likesCount
+
+  + getTags()
+  + getLikesCount()
+}
+
+@enduml

@@ -1,7 +1,5 @@
 package com.yehoshua.finalp.ui;
 
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
@@ -16,14 +14,24 @@ public class HomeView extends VerticalLayout {
         boolean loggedIn = SessionManager.isLoggedIn();
 
         setSizeFull();
+        setPadding(false);
+        setSpacing(false);
         setAlignItems(Alignment.CENTER);
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        add(new NavBar());
 
         getStyle()
-                .set("background", "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)")
-                .set("padding", "40px");
+                .set("background", "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)");
 
+        // Navbar at the top
+        add(new NavBar());
+
+        // Center area for the card
+        VerticalLayout centerLayout = new VerticalLayout();
+        centerLayout.setSizeFull();
+        centerLayout.setAlignItems(Alignment.CENTER);
+        centerLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+        centerLayout.setPadding(true);
+
+        // Main card
         VerticalLayout card = new VerticalLayout();
         card.setWidth("600px");
         card.setAlignItems(Alignment.CENTER);
@@ -48,11 +56,16 @@ public class HomeView extends VerticalLayout {
                 .set("margin", "0");
 
         Paragraph subtitle = new Paragraph(
-                "Share your miniatures, dioramas, and painting projects.");
+                "Share your miniatures, dioramas, and painting projects.\n" +
+                "By Yehoshua Naimark\n" +
+                "2026"
+        );
+
         subtitle.getStyle()
                 .set("color", "#666")
                 .set("font-size", "18px")
                 .set("text-align", "center")
+                .set("white-space", "pre-line")
                 .set("margin-bottom", "20px");
 
         Image image = new Image("Picture2.png", "Miniatures and dioramas");
@@ -63,74 +76,14 @@ public class HomeView extends VerticalLayout {
                 .set("box-shadow", "0 4px 15px rgba(0,0,0,0.15)")
                 .set("margin-bottom", "20px");
 
-        Button feedButton = new Button("View Feed");
-        feedButton.setWidth("220px");
-        feedButton.getStyle()
-                .set("background-color", "#8e44ad")
-                .set("color", "white")
-                .set("font-size", "18px")
-                .set("font-weight", "bold")
-                .set("border-radius", "10px")
-                .set("padding", "12px");
-
-        feedButton.addClickListener(event ->
-                UI.getCurrent().navigate("feed"));
-
-        Button registerButton = new Button("Create Account");
-        registerButton.setWidth("220px");
-        registerButton.getStyle()
-                .set("background-color", "#27ae60")
-                .set("color", "white")
-                .set("font-size", "18px")
-                .set("font-weight", "bold")
-                .set("border-radius", "10px")
-                .set("padding", "12px");
-
-        registerButton.addClickListener(event ->
-                UI.getCurrent().navigate("register"));
-
-        Button loginButton = new Button("Login");
-        loginButton.setWidth("220px");
-        loginButton.getStyle()
-                .set("background-color", "#3498db")
-                .set("color", "white")
-                .set("font-size", "18px")
-                .set("font-weight", "bold")
-                .set("border-radius", "10px")
-                .set("padding", "12px");
-
-        loginButton.addClickListener(event ->
-                UI.getCurrent().navigate("login"));
-
-        Button logoutButton = new Button("Logout");
-        logoutButton.setWidth("220px");
-        logoutButton.getStyle()
-                .set("background-color", "#e74c3c")
-                .set("color", "white")
-                .set("font-size", "18px")
-                .set("font-weight", "bold")
-                .set("border-radius", "10px")
-                .set("padding", "12px");
-
-        logoutButton.addClickListener(event -> {
-            SessionManager.logout();
-            UI.getCurrent().getPage().reload();
-        });
-
         card.add(
                 roleText,
                 title,
                 subtitle,
-                image,
-                feedButton
+                image
         );
 
-        if (loggedIn) {
-            card.add(logoutButton);
-        } else {
-            card.add(registerButton, loginButton);
-        }
-
-        add(card);
+        centerLayout.add(card);
+        add(centerLayout);
     }
 }

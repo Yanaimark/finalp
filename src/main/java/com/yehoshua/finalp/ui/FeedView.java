@@ -14,8 +14,6 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.JustifyContentMode;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
@@ -31,58 +29,18 @@ public class FeedView extends VerticalLayout {
                 ? SessionManager.getCurrentUser().getId()
                 : null;
 
+        setAlignItems(Alignment.CENTER);
+        setSpacing(true);
+        setPadding(true);
+
+        add(new NavBar());
+
         H1 title = new H1("Miniatures & Dioramas Feed");
         title.getStyle()
                 .set("color", "#2c3e50")
                 .set("margin-bottom", "20px");
 
         add(title);
-
-        HorizontalLayout navBar = new HorizontalLayout();
-        navBar.setWidth("100%");
-        navBar.setJustifyContentMode(JustifyContentMode.CENTER);
-        navBar.setSpacing(true);
-
-        Button homeButton = new Button("🏠 Home");
-        homeButton.addClickListener(event ->
-                getUI().ifPresent(ui -> ui.navigate(HomeView.class)));
-
-        Button feedButton = new Button("🖼 Feed");
-        feedButton.addClickListener(event ->
-                getUI().ifPresent(ui -> ui.navigate("feed")));
-
-        navBar.add(homeButton, feedButton);
-
-        if (loggedIn) {
-            Button createPostButton = new Button("➕ Create Post");
-            createPostButton.addClickListener(event ->
-                    getUI().ifPresent(ui -> ui.navigate("create-post")));
-
-            Button profileButton = new Button("👤 Profile");
-            profileButton.addClickListener(event ->
-                    getUI().ifPresent(ui -> ui.navigate("profile")));
-
-            Button logoutButton = new Button("🚪 Logout");
-            logoutButton.addClickListener(event -> {
-                SessionManager.logout();
-                Notification.show("Logged out. You are now a guest.");
-                getUI().ifPresent(ui -> ui.navigate(HomeView.class));
-            });
-
-            navBar.add(createPostButton, profileButton, logoutButton);
-        } else {
-            Button loginButton = new Button("Login");
-            loginButton.addClickListener(event ->
-                    getUI().ifPresent(ui -> ui.navigate("login")));
-
-            Button registerButton = new Button("Register");
-            registerButton.addClickListener(event ->
-                    getUI().ifPresent(ui -> ui.navigate("register")));
-
-            navBar.add(loginButton, registerButton);
-        }
-
-        add(navBar);
 
         Paragraph roleText = new Paragraph("Current role: " + SessionManager.getRole());
         roleText.getStyle()

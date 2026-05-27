@@ -1,0 +1,10 @@
+@startuml
+
+class UserService {
+  + registerUser(User user)
+  + login(String username, String password)
+  + likePost(String userId, String postId)
+  + unlikePost(String userId, String postId)
+}
+
+@enduml

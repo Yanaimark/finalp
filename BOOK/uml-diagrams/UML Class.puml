@@ -1,0 +1,79 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam nodesep 120
+skinparam ranksep 140
+
+title Gallery Miniatures - Class Relationships
+
+package "UI Views" {
+  class FeedView
+  class LoginView
+  class RegisterView
+  class CreatePostView
+  class ProfileView
+}
+
+package "Session" {
+  class SessionManager
+}
+
+package "Services" {
+  class FeedService
+  class RecommendationService
+  class UserService
+  class PostService
+  class FileStorageService
+}
+
+package "Repositories" {
+  interface UserRepository
+  interface PostRepository
+}
+
+package "Data Models" {
+  class User
+  class Post
+}
+
+' UI -> Services
+FeedView --> FeedService : injection
+FeedView --> UserService : injection
+LoginView --> UserService : injection
+RegisterView --> UserService : injection
+CreatePostView --> PostService : injection
+CreatePostView --> FileStorageService : uses
+ProfileView --> PostService : uses
+
+' UI -> Session
+FeedView ..> SessionManager : uses
+LoginView ..> SessionManager : uses
+ProfileView ..> SessionManager : uses
+CreatePostView ..> SessionManager : uses
+SessionManager --> User : stores
+
+' Services -> Repositories
+UserService --> UserRepository : repository access
+UserService --> PostRepository : repository access
+PostService --> PostRepository : repository access
+FeedService --> PostRepository : repository access
+
+' Services -> Services
+FeedService --> RecommendationService : uses
+
+' Services -> Models
+RecommendationService ..> User : reads
+RecommendationService ..> Post : reads
+UserService ..> User : updates
+UserService ..> Post : updates
+PostService ..> Post : creates
+
+' Repositories -> Models
+UserRepository ..> User : manages
+PostRepository ..> Post : manages
+
+' Domain relationships
+User "1" --> "many" Post : creates
+User "1" --> "many" Post : likes
+
+@enduml

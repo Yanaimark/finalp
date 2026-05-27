@@ -1,0 +1,8 @@
+@startuml
+
+class PostService {
+  + createPost(Post post)
+  + getAllPosts()
+}
+
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+
+class User {
+  - String id
+  - String username
+  - String email
+  - String password
+  - List<String> interests
+  - Map<String, Integer> preferenceVector
+
+  + getUsername()
+  + getPreferenceVector()
+  + getId()
+}
+
+@enduml

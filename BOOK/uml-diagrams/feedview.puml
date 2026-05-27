@@ -1,0 +1,9 @@
+@startuml
+
+class FeedView {
+  + FeedView(FeedService feedService, UserService userService)
+  - displayPosts()
+  - createLikeButton()
+}
+
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+
+class RecommendationService {
+  + calculateScore(Post post, User user)
+}
+
+@enduml

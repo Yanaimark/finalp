@@ -1,0 +1,32 @@
+@startuml
+skinparam rectangle {
+  BackgroundColor #DFF3FF
+  BorderColor #2C3E50
+}
+
+rectangle "LandingView\nStart screen\nAllowed: Guest" as Landing
+rectangle "RegisterView\nCreate account\nAllowed: Guest" as Register
+rectangle "LoginView\nLogin screen\nAllowed: Guest" as Login
+rectangle "FeedView\nPersonalized feed\nAllowed: Logged-in user" as Feed
+rectangle "MainMenuView\nNavigation menu\nAllowed: Logged-in user" as Menu
+rectangle "CreatePostView\nCreate new post\nAllowed: Logged-in user" as CreatePost
+rectangle "ProfileView\nUser profile\nAllowed: Logged-in user" as Profile
+
+Landing --> Register : Register
+Register --> Login : after registration
+Landing --> Login : Login
+Login --> Feed : successful login
+
+Feed --> Landing : Logout
+Feed --> Menu
+Menu --> Feed
+Menu --> CreatePost
+Menu --> Profile
+Menu --> Landing : Logout
+
+Feed --> CreatePost : Create Post
+CreatePost --> Feed : Post / Cancel
+
+Feed --> Profile : Profile
+Profile --> Feed : Back to Feed
+@enduml

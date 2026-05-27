@@ -1,0 +1,8 @@
+@startuml
+
+class LoginView {
+  + LoginView(UserService userService)
+  - login()
+}
+
+@enduml

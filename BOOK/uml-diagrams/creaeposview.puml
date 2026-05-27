@@ -1,0 +1,9 @@
+@startuml
+
+class CreatePostView {
+  + CreatePostView(PostService postService)
+  - createPost()
+  - uploadImage()
+}
+
+@enduml
